@@ -20,6 +20,11 @@ a {
   color: black;
 }
 
+/* 이외에도 중복되는 것은 클래스로 지정해주는 게 좋다 */
+.blue {
+  color: var(--main-blue);
+}
+
 header {
   background-color: var(--light-gray);
 }
@@ -107,4 +112,10 @@ header {
 /* 드롭다운에 hover를 했을 경우, 다시 보이도록 함 */
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+@media only all and (max-width: 400px) {
+  html {
+    font-size: 8px;
+  }
 }
