@@ -48,3 +48,33 @@ exports.insertTodo = async function (userIdx, contents, type) {
     return false;
   }
 };
+
+exports.selectTodoByType = async function (userIdx, type) {
+  try {
+    // DB 연결 검사
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    // 쿼리
+    try {
+      const selectTodoByTypeQuery =
+        'select * from Todos where userIdx =? and type = ?'; //쿼리는 항상 mysql에서 테스트 하고 가져오는 게 좋다.
+
+      const selectTodoByTypeParams = [userIdx, type];
+
+      const [row] = await connection.query(
+        selectTodoByTypeQuery,
+        selectTodoByTypeParams
+      );
+
+      return row;
+    } catch (err) {
+      console.error(`##### selectTodoByType Query Error ##### \n ${err}`);
+      return false;
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error(`##### selectTodoByType DB Error ##### \n ${err}`);
+    return false;
+  }
+};

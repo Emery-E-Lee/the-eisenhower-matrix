@@ -52,3 +52,14 @@ exports.createTodo = async function (req, res) {
     message: '일정 생성 성공',
   });
 };
+
+exports.readTodo = async function (req, res) {
+  const { userIdx } = req.params;
+
+  // 할일을 타입 별로 분류하기
+  let type = 'do';
+
+  const selectTodoByTypeRows = await indexDao.selectTodoByType(userIdx, type);
+
+  return res.send(selectTodoByTypeRows);
+};
