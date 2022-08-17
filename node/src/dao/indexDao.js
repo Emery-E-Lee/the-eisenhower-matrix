@@ -136,3 +136,30 @@ exports.updateTodo = async function (userIdx, todoIdx, contents, status) {
     return false;
   }
 };
+
+exports.deleteTodo = async function (userIdx, todoIdx) {
+  try {
+    // DB 연결 검사
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    // 쿼리
+    try {
+      const deleteTodoQuery =
+        "update Todos set status = 'D' where userIdx = ? and todoIdx =?;";
+
+      const deleteTodoParams = [userIdx, todoIdx];
+
+      const [row] = await connection.query(deleteTodoQuery, deleteTodoParams);
+
+      return row;
+    } catch (err) {
+      console.error(`##### deleteTodo Query Error ##### \n ${err}`);
+      return false;
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error(`##### deleteTodo DB Error ##### \n ${err}`);
+    return false;
+  }
+};
