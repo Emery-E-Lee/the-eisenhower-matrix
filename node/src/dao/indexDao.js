@@ -22,6 +22,7 @@ exports.getUserRows = async function () {
   }
 };
 
+// todo 추가
 exports.insertTodo = async function (userIdx, contents, type) {
   try {
     // DB 연결 검사
@@ -57,7 +58,7 @@ exports.selectTodoByType = async function (userIdx, type) {
     // 쿼리
     try {
       const selectTodoByTypeQuery =
-        'select * from Todos where userIdx =? and type = ?'; //쿼리는 항상 mysql에서 테스트 하고 가져오는 게 좋다.
+        "select todoIdx, contents from Todos where userIdx = ? and type = ? and status ='A';"; //쿼리는 항상 mysql에서 테스트 하고 가져오는 게 좋다.
 
       const selectTodoByTypeParams = [userIdx, type];
 

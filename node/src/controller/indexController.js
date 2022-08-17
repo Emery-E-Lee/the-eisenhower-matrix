@@ -57,9 +57,27 @@ exports.readTodo = async function (req, res) {
   const { userIdx } = req.params;
 
   // 할일을 타입 별로 분류하기
-  let type = 'do';
+  const todos = {};
+  const types = ['do', 'decide', 'delegate', 'delete'];
 
-  const selectTodoByTypeRows = await indexDao.selectTodoByType(userIdx, type);
+  for (let type of types) {
+    let selectTodoByTypeRows = await indexDao.selectTodoByType(userIdx, type);
 
-  return res.send(selectTodoByTypeRows);
+    if (!selectTodoByTypeRows) {
+      return res.send({
+        isSuccess: false,
+        code: 400,
+        message: '일정 조회 실패! 관리자에게 문의해주세요.',
+      });
+    }
+
+    todos[type] = selectTodoByTypeRows;
+  }
+
+  return res.send({
+    result: todos,
+    isSuccess: true,
+    code: 200,
+    message: '일정 조회 성공',
+  });
 };
