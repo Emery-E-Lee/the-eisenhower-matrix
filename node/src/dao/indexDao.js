@@ -58,7 +58,7 @@ exports.selectTodoByType = async function (userIdx, type) {
     // 쿼리
     try {
       const selectTodoByTypeQuery =
-        "select todoIdx, contents from Todos where userIdx = ? and type = ? and status ='A';"; //쿼리는 항상 mysql에서 테스트 하고 가져오는 게 좋다.
+        "select todoIdx, contents from Todos where userIdx = ? and type = ? and not(status ='D');";
 
       const selectTodoByTypeParams = [userIdx, type];
 
@@ -76,6 +76,63 @@ exports.selectTodoByType = async function (userIdx, type) {
     }
   } catch (err) {
     console.error(`##### selectTodoByType DB Error ##### \n ${err}`);
+    return false;
+  }
+};
+
+exports.selectValidTodo = async function (userIdx, todoIdx) {
+  try {
+    // DB 연결 검사
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    // 쿼리
+    try {
+      const selectValidTodoQuery =
+        "select * from Todos where userIdx = ? and todoIdx = ? and not(status ='D');";
+
+      const selectValidTodoParams = [userIdx, todoIdx];
+
+      const [row] = await connection.query(
+        selectValidTodoQuery,
+        selectValidTodoParams
+      );
+
+      return row;
+    } catch (err) {
+      console.error(`##### selectValidTodo Query Error ##### \n ${err}`);
+      return false;
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error(`##### selectValidTodo DB Error ##### \n ${err}`);
+    return false;
+  }
+};
+
+exports.updateTodo = async function (userIdx, todoIdx, contents, status) {
+  try {
+    // DB 연결 검사
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    // 쿼리
+    try {
+      const updateTodoQuery =
+        'update Todos set contents = ifnull(?,contents), status = ifnull(?,status) where userIdx = ? and todoIdx =?;';
+
+      const updateTodoParams = [contents, status, userIdx, todoIdx];
+
+      const [row] = await connection.query(updateTodoQuery, updateTodoParams);
+
+      return row;
+    } catch (err) {
+      console.error(`##### updateTodo Query Error ##### \n ${err}`);
+      return false;
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error(`##### updateTodo DB Error ##### \n ${err}`);
     return false;
   }
 };

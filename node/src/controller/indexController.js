@@ -1,3 +1,4 @@
+const e = require('express');
 const indexDao = require('../dao/indexDao');
 
 exports.createTodo = async function (req, res) {
@@ -79,5 +80,51 @@ exports.readTodo = async function (req, res) {
     isSuccess: true,
     code: 200,
     message: '일정 조회 성공',
+  });
+};
+
+//todo update
+exports.updateTodo = async function (req, res) {
+  let { userIdx, todoIdx, contents, status } = req.body; // 재할당이 되는 변수는 let을 사용
+
+  if (!userIdx || !todoIdx) {
+    return res.send({
+      isSuccess: false,
+      code: 400,
+      message: 'userIdx와 todoIdx를 보내주세요.',
+    });
+  }
+
+  if (!contents) {
+    contents = null;
+  }
+
+  if (!status) {
+    status = null;
+  }
+
+  const isValidTodoRow = await indexDao.selectValidTodo(userIdx, todoIdx);
+
+  if (isValidTodoRow.length < 1) {
+    return res.send({
+      isSuccess: false,
+      code: 400,
+      message: '유효한 요청이 아닙니다. userIdx와 todoIdx를 확인하세요.',
+    });
+  }
+
+  console.log(isValidTodoRow);
+
+  const updateTodoRow = await indexDao.updateTodo(
+    userIdx,
+    todoIdx,
+    contents,
+    status
+  );
+
+  return res.send({
+    isSuccess: true,
+    code: 200,
+    message: '수정 성공',
   });
 };
