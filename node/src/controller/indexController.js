@@ -140,8 +140,6 @@ exports.updateTodo = async function (req, res) {
 exports.deleteTodo = async function (req, res) {
   const { userIdx, todoIdx } = req.params;
 
-  const isValidTodoRow = await indexDao.selectValidTodo(userIdx, todoIdx);
-
   if (!userIdx || !todoIdx) {
     return res.send({
       isSuccess: false,
