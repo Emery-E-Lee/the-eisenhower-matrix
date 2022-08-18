@@ -1,6 +1,7 @@
 const compression = require('compression');
 const cors = require('cors');
 const { indexRouter } = require('./src/router/indexRouter');
+const { userRouter } = require('./src/router/userRouter');
 
 const express = require('express');
 const app = express();
@@ -18,6 +19,7 @@ app.use(compression());
 
 // 라우터 분리
 indexRouter(app);
+userRouter(app);
 
 //get(uri, callback 함수), callback 함수는 req, res 두 개의 파라미터를 받는다.
 // req: 클라이언트에서 서버로 요청하는 객체, res: 서버가 클라이언트에게 응답해주는 객체
