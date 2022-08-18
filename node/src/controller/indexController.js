@@ -2,7 +2,8 @@ const e = require('express');
 const indexDao = require('../dao/indexDao');
 
 exports.createTodo = async function (req, res) {
-  const { userIdx, contents, type } = req.body;
+  const { userIdx } = req.verifiedToken;
+  const { contents, type } = req.body;
 
   //값이 하나라도 누락 됐을 때,
   if (!userIdx || !contents || !type) {
@@ -55,7 +56,7 @@ exports.createTodo = async function (req, res) {
 };
 
 exports.readTodo = async function (req, res) {
-  const { userIdx } = req.params;
+  const { userIdx } = req.verifiedToken;
 
   // 할일을 타입 별로 분류하기
   const todos = {};
@@ -85,7 +86,8 @@ exports.readTodo = async function (req, res) {
 
 //todo update
 exports.updateTodo = async function (req, res) {
-  let { userIdx, todoIdx, contents, status } = req.body; // 재할당이 되는 변수는 let을 사용
+  const { userIdx } = req.verifiedToken;
+  let { todoIdx, contents, status } = req.body; // 재할당이 되는 변수는 let을 사용
 
   if (!userIdx || !todoIdx) {
     return res.send({
@@ -138,7 +140,8 @@ exports.updateTodo = async function (req, res) {
 //todo 삭제
 
 exports.deleteTodo = async function (req, res) {
-  const { userIdx, todoIdx } = req.params;
+  const { userIdx } = req.verifiedToken;
+  const { todoIdx } = req.params;
 
   if (!userIdx || !todoIdx) {
     return res.send({
