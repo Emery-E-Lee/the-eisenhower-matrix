@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일정 관리 서비스</title>
+
+    <!-- 메타 태그 설정, 저자, 키워드, 설명 -->
+    <meta name="author" content="Emery E. Lee" />
+    <meta name="keywords" content="성공일정, 아이젠하워 매트릭스, 일정관리, 업무 분배, 우선 순위" />
+    <meta name="description" content="아이젠하워 매트릭스를 이용해 중요도와 긴급성을 기준으로 우선 순위를 정해서 효율적인 계획을 세워보세요." />
+
+
+
+    <!-- 파비콘 -->
+    <link rel="icon" href="img\favicon4.ico" />
+
+    <!-- 아이폰 파비콘 -->
+    <link rel="apple-touch-icon" href="img\favicon4.ico" />
+
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+        integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/signin.css">
+
+
+</head>
+
+<body>
+    <header>
+        <div class="inner">
+            <div class="header-container">
+                <div class="title">
+                    <a href="index.html">성공일정</a>
+                </div>
+                <!-- title -->
+                <div class="sign-container">
+                    <div class="unsigned">
+                        <div class="sign-in"><a href="./signin.html">로그인</a></div>
+                        <div class="sign-up"><a href="./signup.html">회원가입</a></div>
+                    </div>
+                    <!-- unsigned -->
+
+
+                    <div class="signed hidden">
+                        <div class="dropdown">
+                            <div class="dropdown-button">
+                                안녕하세요. <span id="nickname">고양이</span>님!
+                                <!-- 동적인 사항이 있는 텍스트는 span으로 감싸준다. -->
+                                <i class="fa-solid fa-caret-down"></i>
+                            </div>
+                            <!-- dropdown-button -->
+                            <div class="dropdown-content">
+                                <button id="sign-out">로그아웃</button>
+                            </div>
+                            <!-- dropdown-content -->
+                        </div>
+                    </div>
+                    <!-- signed -->
+                </div>
+
+            </div>
+            <!-- header-container -->
+        </div>
+    </header>
+
+    <main>
+        <div class="inner">
+            <div class="signin-container">
+                <h1>안녕하세요. <span class="blue">성공일정</span>입니다.</h1>
+                <div class="signin-form">
+                    <input type="text" placeholder="이메일" id="email" />
+                    <input type="password" placeholder="비밀번호" id="password" />
+                    <input type="button" value="로그인" id="signin" />
+                    <div class="signup-container">
+                        <a href="signup.html" id="signup">회원가입</a>
+                    </div>
+                    <!-- signup-container -->
+                </div>
+                <!-- signin-form -->
+            </div>
+            <!-- signin-container -->
+        </div>
+
+
+    </main>
+
+    <footer>
+        <div class="inner">
+            <div class="footer-container">
+                <div class="author">개발자: Emery E. Lee</div>
+                <div class="author-email">이메일: asfg@test.com</div>
+            </div>
+            <!-- footer-container -->
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
+        integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/common.js"></script>
+    <script src="js/signin.js"></script>
+</body>
+
+</html>
