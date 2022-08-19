@@ -82,3 +82,35 @@ exports.selectUser = async function (email, password) {
     return false;
   }
 };
+
+exports.selectNicknameByUserIdx = async function (userIdx) {
+  try {
+    // DB 연결 검사
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    // 쿼리
+    try {
+      const selectNicknameByUserIdxQuery =
+        'select * from Users where userIdx = ?';
+
+      const selectNicknameByUserIdxParams = [userIdx];
+
+      const [row] = await connection.query(
+        selectNicknameByUserIdxQuery,
+        selectNicknameByUserIdxParams
+      );
+
+      return row;
+    } catch (err) {
+      console.error(
+        `##### selectNicknameByUserIdx Query Error ##### \n ${err}`
+      );
+      return false;
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    console.error(`##### selectNicknameByUserIdx DB Error ##### \n ${err}`);
+    return false;
+  }
+};

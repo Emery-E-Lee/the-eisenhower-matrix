@@ -1,11 +1,13 @@
-// // 로컬스토리지 데이터 생성
-// localStorage.setItem('x-access-token', 'dummy token');
+// ####### 토큰 검사
 
-// // 로컬스토리지 데이터 조회
-// console.log(localStorage.getItem('x-access-token'));
+const token = localStorage.getItem('x-access-token');
 
-// //로컬스토리지 데이터 삭제
-// localStorage.removeItem('x-access-token');
+if (token) {
+  alert('로그아웃 후 이용해주세요.');
+  location.href = 'index.html';
+}
+
+// ####### 토큰 검사
 
 const buttonSignin = document.getElementById('signin');
 const inputEmail = document.getElementById('email');

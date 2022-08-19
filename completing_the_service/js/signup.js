@@ -1,3 +1,14 @@
+// ####### 토큰 검사
+
+const token = localStorage.getItem('x-access-token');
+
+if (token) {
+  alert('로그아웃 후 이용해주세요.');
+  location.href = 'index.html';
+}
+
+// ####### 토큰 검사
+
 // 입력값 유효성 검사
 
 // 이메일
