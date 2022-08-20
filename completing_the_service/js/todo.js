@@ -1,5 +1,7 @@
 // const { createTodo } = require('../../node/src/controller/indexController');
 
+// const { updateTodo } = require('../../node/src/controller/indexController');
+
 // const { url } = require('inspector');
 
 readTodo();
@@ -65,6 +67,7 @@ async function readTodo() {
 
 const matrixContainer = document.querySelector('.matrix-container');
 matrixContainer.addEventListener('keypress', cudController);
+matrixContainer.addEventListener('click', cudController);
 
 function cudController(event) {
   const token = localStorage.getItem('x-access-token');
@@ -82,6 +85,20 @@ function cudController(event) {
   // create 이벤트 처리
   if (targetTagName === 'INPUT' && key === 'Enter') {
     createTodo(event, token);
+  }
+
+  // update 이벤트 처리
+  // li 태그 내부에서 input checkbox가 선택되거나 i태그가 선택 될 때, 업데이트돼야 함
+
+  if (target.className === 'todo-done' && eventType === 'click') {
+    updateTodoDone(event, token);
+  }
+
+  // 컨텐츠 업데이트
+  // class 중 todo-update만 필요하므로, split으로 잘라 [0]번째 요소만 넣는다
+  const firstClassName = target.className.split(' ')[0];
+  if (firstClassName === 'todo-update' && eventType === 'click') {
+    updateTodoContents(event, token);
   }
 }
 
@@ -114,6 +131,70 @@ async function createTodo(event, token) {
     }
 
     // DOM 업데이트
+    readTodo();
+    event.target.value = '';
+    return true;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+}
+
+async function updateTodoDone(event, token) {
+  const status = event.target.checked ? 'C' : 'A';
+  const todoIdx = event.target.closest('.list-item').id;
+
+  const config = {
+    method: 'patch',
+    url: url + '/todo',
+    headers: { 'x-access-token': token },
+    data: {
+      todoIdx: todoIdx,
+      status: status,
+    },
+  };
+
+  try {
+    const res = await axios(config);
+
+    if (res.data.code !== 200) {
+      alert(res.data.message);
+      return false;
+    }
+
+    // DOM 업데이트 (업데이트한 상태 유지)
+    readTodo();
+    event.target.value = '';
+    return true;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+}
+
+async function updateTodoContents(event, token) {
+  const contents = prompt('내용을 입력해주세요.');
+  const todoIdx = event.target.closest('.list-item').id;
+
+  const config = {
+    method: 'patch',
+    url: url + '/todo',
+    headers: { 'x-access-token': token },
+    data: {
+      todoIdx: todoIdx,
+      contents: contents,
+    },
+  };
+
+  try {
+    const res = await axios(config);
+
+    if (res.data.code !== 200) {
+      alert(res.data.message);
+      return false;
+    }
+
+    // DOM 업데이트 (업데이트한 상태 유지)
     readTodo();
     event.target.value = '';
     return true;
