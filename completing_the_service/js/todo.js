@@ -85,6 +85,7 @@ function cudController(event) {
   // create 이벤트 처리
   if (targetTagName === 'INPUT' && key === 'Enter') {
     createTodo(event, token);
+    return; // 한 이벤트에 걸리면, 다른 이벤트를 실행할 필요가 없음
   }
 
   // update 이벤트 처리
@@ -92,13 +93,21 @@ function cudController(event) {
 
   if (target.className === 'todo-done' && eventType === 'click') {
     updateTodoDone(event, token);
+    return;
   }
 
   // 컨텐츠 업데이트
-  // class 중 todo-update만 필요하므로, split으로 잘라 [0]번째 요소만 넣는다
   const firstClassName = target.className.split(' ')[0];
+  // class 중 todo-update만 필요하므로, split으로 잘라 [0]번째 요소만 넣는다
   if (firstClassName === 'todo-update' && eventType === 'click') {
     updateTodoContents(event, token);
+    return;
+  }
+
+  // delete 이벤트 처리
+  if (firstClassName === 'todo-delete' && eventType === 'click') {
+    deleteTodo(event, token);
+    return;
   }
 }
 
@@ -184,6 +193,42 @@ async function updateTodoContents(event, token) {
       todoIdx: todoIdx,
       contents: contents,
     },
+  };
+
+  try {
+    const res = await axios(config);
+
+    if (res.data.code !== 200) {
+      alert(res.data.message);
+      return false;
+    }
+
+    // DOM 업데이트 (업데이트한 상태 유지)
+    readTodo();
+    event.target.value = '';
+    return true;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+}
+
+async function deleteTodo(event, token) {
+  const isValidReq = confirm(
+    '삭제하시겠습니까? 삭제 후에는 복구가 어렵습니다.'
+  );
+
+  if (!isValidReq) {
+    return false;
+    // yes가 아니면 함수 종료
+  }
+
+  const todoIdx = event.target.closest('.list-item').id;
+
+  const config = {
+    method: 'delete',
+    url: url + `/todo/${todoIdx}`,
+    headers: { 'x-access-token': token },
   };
 
   try {
