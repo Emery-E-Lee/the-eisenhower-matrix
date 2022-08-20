@@ -58,7 +58,7 @@ exports.selectTodoByType = async function (userIdx, type) {
     // 쿼리
     try {
       const selectTodoByTypeQuery =
-        "select todoIdx, contents from Todos where userIdx = ? and type = ? and not(status ='D');";
+        "select todoIdx, contents, status from Todos where userIdx = ? and type = ? and not(status ='D');";
 
       const selectTodoByTypeParams = [userIdx, type];
 
