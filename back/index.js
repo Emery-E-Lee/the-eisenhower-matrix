@@ -8,6 +8,10 @@ const app = express();
 const port = 3000;
 
 /* express  미들웨어 설정 */
+
+// 정적파일 제공
+app.use(express.static('front'));
+
 // cors 설정: 공부 단계라 보안은 느슨하게 해 둠
 app.use(cors());
 
